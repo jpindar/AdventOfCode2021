@@ -1,12 +1,6 @@
 """
 AdventOfCode Day 8
 """
-import logging
-
-logger = logging.getLogger()
-logging.basicConfig(filename="AdventOfCode/Day8/day8.log", filemode="w",
-                    format="%(levelname)-8s:%(asctime)s %(name)s: %(message)s")
-logger.setLevel(logging.INFO)
 
 
 filename = "AdventOfCode/Day8/input.txt"
