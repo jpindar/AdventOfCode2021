@@ -30,6 +30,22 @@ def read_file():
             data[i][j] = int(data[i][j])
 
 
+def add_border():
+    """
+    add a border of 9's to the data to make it easier to work with
+    """
+    global data
+    for i in range(len(data)):
+        data[i].insert(0, 9)
+        data[i].append(9)
+
+    border = []
+    for i in range(len(data[0])):
+        border.append(9)
+    data.insert(0, border)
+    data.append(border)
+
+
 def is_a_low_point(x, y):
     """
     The definition of a low point is:
@@ -38,37 +54,25 @@ def is_a_low_point(x, y):
     Thus the comparisons are <= rather than just <.
     """
     result = True
-    if x == 0:
-        if data[y][x + 1] <= data[y][x]:
-            result = False
-    elif x == len(data[y]) - 1:
-        if data[y][x - 1] <= data[y][x]:
-            result = False
-    else:
-        if data[y][x + 1] <= data[y][x]:
-            result = False
-        if data[y][x - 1] <= data[y][x]:
-            result = False
+    if data[y][x + 1] <= data[y][x]:
+        result = False
+    if data[y][x - 1] <= data[y][x]:
+        result = False
 
-    if y == 0:
-        if data[y + 1][x] <= data[y][x]:
-            result = False
-    elif y == len(data) - 1:
-        if data[y - 1][x] <= data[y][x]:
-            result = False
-    else:
-        if data[y + 1][x] <= data[y][x]:
-            result = False
-        if data[y - 1][x] <= data[y][x]:
-            result = False
+    if data[y + 1][x] <= data[y][x]:
+        result = False
+    if data[y - 1][x] <= data[y][x]:
+        result = False
     return result
 
 
 def main():
     read_file()
+    add_border()
     sum = 0
-    for y in range(len(data)):
-        for x in range(len(data[y])):
+    # avoid 0 and len(data) because they are the border
+    for y in range(1, len(data) - 1):
+        for x in range(1, len(data[y]) - 1):
             if is_a_low_point(x, y):
                 risk_level = 1 + data[y][x]
                 sum += risk_level
