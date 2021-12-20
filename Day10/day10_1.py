@@ -1,14 +1,11 @@
 """
 Advent of Code 2021 day 10 part 1
 """
-import re
-import sys
-filename = "AdventOfCode/Day10/input.txt"
-# filename = "AdventOfCode/Day10/test_input.txt"
+
 data = []
 
 
-def read_file():
+def read_file(filename):
     global data
     data = []
     inputFile = open(filename, "r")
@@ -35,11 +32,12 @@ def simplify(s):
 
 
 def is_incomplete(s):
+    """ A complete line will have been simplified to nothing """
     return (len(s) > 0)
 
 
 def is_corrupt(line):
-    """ Check if line is corrupt """
+    """ a line is corrupt if it contains a pair of characters that don't match """
     bad_pairs = ['(]', '(}', '(>', '[)', '[}', '[>', '{)', '{]', '{>', '<)', '<]', '<}']
     for pair in bad_pairs:
         if pair in line:
@@ -57,27 +55,32 @@ def is_corrupt(line):
     return [False, 0]
 
 
-def main():
-    read_file()
-    n = 0
+def find_score(line):
+    s = simplify(line)
+    [corrupt, score] = is_corrupt(s)
+    # print(f"{line}        {s}        {corrupt}        {score}")
+    return [corrupt, score]
+
+
+def main(filename):
+    read_file(filename)
     total_score = 0
     for line in data:
-        n += 1
-        s = simplify(line)
-        # print(f"{n}        {line}  {s}")
-        # if is_incomplete(s):
-        #     print("incomplete")
-        # else:
-        #     print("complete")
-        [corrupt, score] = is_corrupt(s)
+        [corrupt, score] = find_score(line)
         if corrupt:
-            print(f"corrupt score {score}")
             total_score += score
-        else:
-            # print("not corrupt")
-            pass
-    print(f"total score {total_score}")
+    return total_score
 
 
 if __name__ == "__main__":
-    main()
+    filename = "AdventOfCode/Day10/test_input.txt"
+    print(filename)
+    total_score = main(filename)
+    print(f"total score {total_score}")
+    print(f"total score should be 26397")
+    print()
+    filename = "AdventOfCode/Day10/input.txt"
+    print(filename)
+    total_score = main(filename)
+    print(f"total score {total_score}")
+    print(f"total score should be 462693")
